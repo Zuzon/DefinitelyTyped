@@ -35,11 +35,26 @@ declare module CryptoJS {
 			Hex: Hash;
 		};
 		enc: {
-			Latin1: Function;
-			Utf8: Function;
-			Hex: Function;
-			Utf16: Function;
-			Base64: Function;
+			Latin1: {
+				parse: Function;
+				stringify: Function;
+			};
+			Utf8: {
+				parse: Function;
+				stringify: Function;
+			};
+			Hex: {
+				parse: Function;
+				stringify: Function;
+			};
+			Utf16: {
+				parse: Function;
+				stringify: Function;
+			};
+			Base64: {
+				parse: Function;
+				stringify: Function;
+			};
 		};
 		mode: {
 			CFB: Hash;
