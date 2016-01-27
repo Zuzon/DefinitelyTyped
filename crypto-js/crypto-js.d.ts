@@ -1,4 +1,4 @@
-// Type definitions for crypto-js v3.1.3
+// Type definitions for crypto-js v3.1.6
 // Project: https://github.com/evanvosberg/crypto-js
 // Definitions by: Michael Zabka <https://github.com/misak113/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
@@ -35,11 +35,11 @@ declare module CryptoJS {
 			Hex: Hash;
 		};
 		enc: {
-			Latin1: Hash;
-			Utf8: Hash;
-			Hex: Hash;
-			Utf16: Hash;
-			Base64: Hash;
+			Latin1: Function;
+			Utf8: Function;
+			Hex: Function;
+			Utf16: Function;
+			Base64: Function;
 		};
 		mode: {
 			CFB: Hash;
