@@ -16,6 +16,8 @@ import * as path from "path";
 import * as readline from "readline";
 import * as childProcess from "child_process";
 import * as os from "os";
+// Specifically test buffer module regression.
+import {Buffer as ImportedBuffer, SlowBuffer as ImportedSlowBuffer} from "buffer";
 
 assert(1 + 1 - 2 === 0, "The universe isn't how it should.");
 
@@ -37,7 +39,7 @@ assert.doesNotThrow(() => {
 /// Events tests : http://nodejs.org/api/events.html
 ////////////////////////////////////////////////////
 
-module events_tests {
+namespace events_tests {
     let emitter: events.EventEmitter;
     let event: string;
     let listener: Function;
@@ -160,7 +162,7 @@ function bufferTests() {
 
     // fill returns the input buffer.
     b.fill('a').fill('b');
-   
+
     {
         let buffer = new Buffer('123');
         let index: number;
@@ -168,6 +170,14 @@ function bufferTests() {
         index = buffer.indexOf("23", 1);
         index = buffer.indexOf(23);
         index = buffer.indexOf(buffer);
+    }
+
+    // Imported Buffer from buffer module works properly
+    {
+        let b = new ImportedBuffer('123');
+        b.writeUInt8(0, 6);
+        let sb = new ImportedSlowBuffer(43);
+        b.writeUInt8(0, 6);
     }
 }
 
@@ -285,7 +295,7 @@ request.abort();
 ////////////////////////////////////////////////////
 /// Http tests : http://nodejs.org/api/http.html
 ////////////////////////////////////////////////////
-module http_tests {
+namespace http_tests {
     // Status codes
     var code = 100;
     var codeMessage = http.STATUS_CODES['400'];
@@ -315,7 +325,7 @@ module http_tests {
 /// TTY tests : http://nodejs.org/api/tty.html
 ////////////////////////////////////////////////////
 
-module tty_tests {
+namespace tty_tests {
     let rs: tty.ReadStream;
     let ws: tty.WriteStream;
 
@@ -342,7 +352,7 @@ ds.send(new Buffer("hello"), 0, 5, 5000, "127.0.0.1", (error: Error, bytes: numb
 ///Querystring tests : https://nodejs.org/api/querystring.html
 ////////////////////////////////////////////////////
 
-module querystring_tests {
+namespace querystring_tests {
     type SampleObject = {a: string; b: number;}
 
     {
@@ -385,7 +395,7 @@ module querystring_tests {
 /// path tests : http://nodejs.org/api/path.html
 ////////////////////////////////////////////////////
 
-module path_tests {
+namespace path_tests {
 
     path.normalize('/foo/bar//baz/asdf/quux/..');
 
@@ -524,7 +534,7 @@ module path_tests {
 /// readline tests : https://nodejs.org/api/readline.html
 ////////////////////////////////////////////////////
 
-module readline_tests {
+namespace readline_tests {
     let rl: readline.ReadLine;
 
     {
@@ -628,7 +638,7 @@ childProcess.spawnSync("echo test");
 /// os tests : https://nodejs.org/api/os.html
 ////////////////////////////////////////////////////
 
-module os_tests {
+namespace os_tests {
     {
         let result: string;
 

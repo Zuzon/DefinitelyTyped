@@ -1,9 +1,9 @@
 // Type definitions for Moment.js 2.11.1
 // Project: https://github.com/timrwood/moment
 // Definitions by: Michael Lakerveld <https://github.com/Lakerfield>, Aaron King <https://github.com/kingdango>, Hiroki Horiuchi <https://github.com/horiuchi>, Dick van den Brink <https://github.com/DickvdBrink>, Adi Dahiya <https://github.com/adidahiya>, Matt Brooks <https://github.com/EnableSoftware>, Gal Talmor <https://github.com/galtalmor>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-declare module moment {
+declare namespace moment {
 
     type MomentComparable = Moment | string | number | Date | number[];
 
@@ -18,7 +18,7 @@ declare module moment {
         seconds?: number;
         milliseconds?: number;
     }
-    
+
     interface MomentInput {
         /** Year */
         years?: number;
@@ -280,9 +280,9 @@ declare module moment {
         to(f: MomentComparable, suffix?: boolean): string;
         toNow(withoutPrefix?: boolean): string;
 
-        diff(b: Moment): number;
-        diff(b: Moment, unitOfTime: string): number;
-        diff(b: Moment, unitOfTime: string, round: boolean): number;
+        diff(b: MomentComparable): number;
+        diff(b: MomentComparable, unitOfTime: string): number;
+        diff(b: MomentComparable, unitOfTime: string, round: boolean): number;
 
         toArray(): number[];
         toDate(): Date;
@@ -313,6 +313,7 @@ declare module moment {
          * @since 2.10.7+
          */
         isSameOrBefore(b: MomentComparable, granularity?: string): boolean;
+        isSameOrAfter(b: MomentComparable, granularity?: string): boolean;
 
         /**
          * @deprecated since version 2.8.0
@@ -325,6 +326,10 @@ declare module moment {
         locale(reset: boolean): Moment;
         locale(): string;
 
+        /**
+         * @since 2.12.0+
+         */
+        locales() : string[];
         localeData(language: string): Moment;
         localeData(reset: boolean): Moment;
         localeData(): MomentLanguage;
@@ -344,7 +349,7 @@ declare module moment {
         get(unit: string): number;
         set(unit: string, value: number): Moment;
         set(objectLiteral: MomentInput): Moment;
-        
+
         /**
          * This returns an object containing year, month, day-of-month, hour, minute, seconds, milliseconds.
          * @since 2.10.5+
@@ -378,10 +383,16 @@ declare module moment {
         meridiem?: (hour: number, minute: number, isLowercase: boolean) => string;
         calendar?: MomentCalendar;
         ordinal?: (num: number) => string;
+        week?: MomentLanguageWeek;
     }
 
     interface MomentLanguage extends BaseMomentLanguage {
         longDateFormat?: MomentLongDateFormat;
+    }
+
+    interface MomentLanguageWeek {
+        dow?: number;
+        doy?: number;
     }
 
     interface MomentLanguageData {

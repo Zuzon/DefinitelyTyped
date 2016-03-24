@@ -1,7 +1,7 @@
 // Type definitions for fs-extra
 // Project: https://github.com/jprichardson/node-fs-extra
 // Definitions by: midknight41 <https://github.com/midknight41>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 // Imported from: https://github.com/soywiz/typescript-node-definitions/fs-extra.d.ts
 
@@ -65,10 +65,10 @@ declare module "fs-extra" {
 	export function outputJsonSync(file: string, data: any): void;
 	export function outputJSONSync(file: string, data: any): void;
 
-	export function readJson(file: string, callback?: (err: Error) => void): void;
-	export function readJson(file: string, options?: OpenOptions, callback?: (err: Error) => void): void;
-	export function readJSON(file: string, callback?: (err: Error) => void): void;
-	export function readJSON(file: string, options?: OpenOptions, callback?: (err: Error) => void): void;
+	export function readJson(file: string, callback: (err: Error, jsonObject: any) => void): void;
+	export function readJson(file: string, options: OpenOptions, callback: (err: Error, jsonObject: any) => void): void;
+	export function readJSON(file: string, callback: (err: Error, jsonObject: any) => void): void;
+	export function readJSON(file: string, options: OpenOptions, callback: (err: Error, jsonObject: any) => void): void;
 
 	export function readJsonSync(file: string, options?: OpenOptions): any;
 	export function readJSONSync(file: string, options?: OpenOptions): any;

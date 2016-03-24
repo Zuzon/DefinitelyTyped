@@ -1,7 +1,7 @@
 // Type definitions for Lo-Dash
 // Project: http://lodash.com/
 // Definitions by: Brian Zengel <https://github.com/bczengel>, Ilya Mochalov <https://github.com/chrootsu>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 declare var _: _.LoDashStatic;
 
@@ -1472,6 +1472,13 @@ declare module _ {
         last<T>(array: List<T>): T;
     }
 
+    interface LoDashImplicitWrapper<T> {
+        /**
+         * @see _.last
+         */
+        last(): string;
+    }
+
     interface LoDashImplicitArrayWrapper<T> {
         /**
          * @see _.last
@@ -1486,18 +1493,25 @@ declare module _ {
         last<T>(): T;
     }
 
+    interface LoDashExplicitWrapper<T> {
+        /**
+         * @see _.last
+         */
+        last(): LoDashExplicitWrapper<string>;
+    }
+
     interface LoDashExplicitArrayWrapper<T> {
         /**
          * @see _.last
          */
-        last(): LoDashExplicitArrayWrapper<T>;
+        last<T>(): T;
     }
 
     interface LoDashExplicitObjectWrapper<T> {
         /**
          * @see _.last
          */
-        last<T>(): LoDashExplicitObjectWrapper<T>;
+        last<T>(): T;
     }
 
     //_.lastIndexOf
@@ -9601,16 +9615,17 @@ declare module _ {
          * @param resolver The function to resolve the cache key.
          * @return Returns the new memoizing function.
          */
-        memoize<TResult extends MemoizedFunction>(
-            func: Function,
-            resolver?: Function): TResult;
+        memoize: {
+            <T extends Function>(func: T, resolver?: Function): T & MemoizedFunction;
+            Cache: MapCache;
+        }
     }
 
     interface LoDashImplicitObjectWrapper<T> {
         /**
          * @see _.memoize
          */
-        memoize<TResult extends MemoizedFunction>(resolver?: Function): LoDashImplicitObjectWrapper<TResult>;
+        memoize(resolver?: Function): LoDashImplicitObjectWrapper<T & MemoizedFunction>;
     }
 
     //_.modArgs
@@ -10123,132 +10138,510 @@ declare module _ {
      ********/
 
     //_.clone
+    interface CloneCustomizer<TValue, TResult> {
+        (value: TValue): TResult;
+    }
+
     interface LoDashStatic {
         /**
          * Creates a clone of value. If isDeep is true nested objects are cloned, otherwise they are assigned by
-         * reference. If customizer is provided it’s invoked to produce the cloned values. If customizer returns
-         * undefined cloning is handled by the method instead. The customizer is bound to thisArg and invoked with up
-         * to three argument; (value [, index|key, object]).
-         * Note: This method is loosely based on the structured clone algorithm. The enumerable properties of arguments
-         * objects and objects created by constructors other than Object are cloned to plain Object objects. An empty
-         * object is returned for uncloneable values such as functions, DOM nodes, Maps, Sets, and WeakMaps.
+         * reference. If customizer is provided it's invoked to produce the cloned values. If customizer returns
+         * undefined cloning is handled by the method instead. The customizer is bound to thisArg and invoked with
+         * up to three argument; (value [, index|key, object]).
+         *
+         * Note: This method is loosely based on the structured clone algorithm. The enumerable properties of
+         * arguments objects and objects created by constructors other than Object are cloned to plain Object
+         * objects. An empty object is returned for uncloneable values such as functions, DOM nodes, Maps, Sets,
+         * and WeakMaps.
+         *
          * @param value The value to clone.
          * @param isDeep Specify a deep clone.
          * @param customizer The function to customize cloning values.
          * @param thisArg The this binding of customizer.
          * @return Returns the cloned value.
          */
-        clone<T>(
+        clone<TResult>(
+            value: any,
+            isDeep: boolean,
+            customizer: CloneCustomizer<any, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.clone
+         */
+        clone<T, TResult>(
             value: T,
-            isDeep?: boolean,
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
+
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            value: any,
+            customizer: CloneCustomizer<any, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.clone
+         */
+        clone<T, TResult>(
+            value: T,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
 
         /**
          * @see _.clone
          */
         clone<T>(
             value: T,
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+            isDeep?: boolean
+        ): T;
     }
 
     interface LoDashImplicitWrapper<T> {
         /**
          * @see _.clone
          */
-        clone(
-            isDeep?: boolean,
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+        clone<TResult>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
 
         /**
          * @see _.clone
          */
         clone(
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+            isDeep?: boolean
+        ): T;
     }
 
     interface LoDashImplicitArrayWrapper<T> {
         /**
          * @see _.clone
          */
-        clone(
-            isDeep?: boolean,
-            customizer?: (value: any) => any,
-            thisArg?: any): T[];
+        clone<TResult>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T[], TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            customizer: CloneCustomizer<T[], TResult>,
+            thisArg?: any
+        ): TResult;
 
         /**
          * @see _.clone
          */
         clone(
-            customizer?: (value: any) => any,
-            thisArg?: any): T[];
+            isDeep?: boolean
+        ): T[];
     }
 
     interface LoDashImplicitObjectWrapper<T> {
         /**
          * @see _.clone
          */
-        clone(
-            isDeep?: boolean,
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+        clone<TResult>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
 
         /**
          * @see _.clone
          */
         clone(
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+            isDeep?: boolean
+        ): T;
+    }
+
+    interface LoDashExplicitWrapper<T> {
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends (number|string|boolean)>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends Object>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends (number|string|boolean)>(
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            customizer: CloneCustomizer<T, TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends Object>(
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone(
+            isDeep?: boolean
+        ): LoDashExplicitWrapper<T>;
+    }
+
+    interface LoDashExplicitArrayWrapper<T> {
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends (number|string|boolean)>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T[], TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T[], TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends Object>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T[], TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends (number|string|boolean)>(
+            customizer: CloneCustomizer<T[], TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            customizer: CloneCustomizer<T[], TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends Object>(
+            customizer: CloneCustomizer<T[], TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone(
+            isDeep?: boolean
+        ): LoDashExplicitArrayWrapper<T>;
+    }
+
+    interface LoDashExplicitObjectWrapper<T> {
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends (number|string|boolean)>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends Object>(
+            isDeep: boolean,
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends (number|string|boolean)>(
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult>(
+            customizer: CloneCustomizer<T, TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone<TResult extends Object>(
+            customizer: CloneCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.clone
+         */
+        clone(
+            isDeep?: boolean
+        ): LoDashExplicitObjectWrapper<T>;
     }
 
     //_.cloneDeep
+    interface CloneDeepCustomizer<TValue, TResult> {
+        (value: TValue): TResult;
+    }
+
     interface LoDashStatic {
         /**
-         * Creates a deep clone of value. If customizer is provided it’s invoked to produce the cloned values. If
-         * customizer returns undefined cloning is handled by the method instead. The customizer is bound to thisArg
-         * and invoked with up to three argument; (value [, index|key, object]).
-         * Note: This method is loosely based on the structured clone algorithm. The enumerable properties of arguments
-         * objects and objects created by constructors other than Object are cloned to plain Object objects. An empty
-         * object is returned for uncloneable values such as functions, DOM nodes, Maps, Sets, and WeakMaps.
+         * Creates a deep clone of value. If customizer is provided it's invoked to produce the cloned values.
+         * If customizer returns undefined cloning is handled by the method instead. The customizer is bound to
+         * thisArg and invoked with up to three argument; (value [, index|key, object]).
+         *
+         * Note: This method is loosely based on the structured clone algorithm. The enumerable properties of
+         * arguments objects and objects created by constructors other than Object are cloned to plain Object objects.
+         * An empty object is returned for uncloneable values such as functions, DOM nodes, Maps, Sets, and WeakMaps.
+         *
          * @param value The value to deep clone.
          * @param customizer The function to customize cloning values.
          * @param thisArg The this binding of customizer.
          * @return Returns the deep cloned value.
          */
-        cloneDeep<T>(
+        cloneDeep<TResult>(
+            value: any,
+            customizer: CloneDeepCustomizer<any, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<T, TResult>(
             value: T,
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+            customizer: CloneDeepCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<T>(
+            value: T
+        ): T;
     }
 
     interface LoDashImplicitWrapper<T> {
         /**
          * @see _.cloneDeep
          */
-        cloneDeep(
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+        cloneDeep<TResult>(
+            customizer: CloneDeepCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep(): T;
     }
 
     interface LoDashImplicitArrayWrapper<T> {
         /**
          * @see _.cloneDeep
          */
-        cloneDeep(
-            customizer?: (value: any) => any,
-            thisArg?: any): T[];
+        cloneDeep<TResult>(
+            customizer: CloneDeepCustomizer<T[], TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep(): T[];
     }
 
     interface LoDashImplicitObjectWrapper<T> {
         /**
          * @see _.cloneDeep
          */
-        cloneDeep(
-            customizer?: (value: any) => any,
-            thisArg?: any): T;
+        cloneDeep<TResult>(
+            customizer: CloneDeepCustomizer<T, TResult>,
+            thisArg?: any
+        ): TResult;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep(): T;
+    }
+
+    interface LoDashExplicitWrapper<T> {
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult extends (number|string|boolean)>(
+            customizer: CloneDeepCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult>(
+            customizer: CloneDeepCustomizer<T, TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult extends Object>(
+            customizer: CloneDeepCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep(): LoDashExplicitWrapper<T>;
+    }
+
+    interface LoDashExplicitArrayWrapper<T> {
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult extends (number|string|boolean)>(
+            customizer: CloneDeepCustomizer<T[], TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult>(
+            customizer: CloneDeepCustomizer<T[], TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult extends Object>(
+            customizer: CloneDeepCustomizer<T[], TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep(): LoDashExplicitArrayWrapper<T>;
+    }
+
+    interface LoDashExplicitObjectWrapper<T> {
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult extends (number|string|boolean)>(
+            customizer: CloneDeepCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult>(
+            customizer: CloneDeepCustomizer<T, TResult[]>,
+            thisArg?: any
+        ):  LoDashExplicitArrayWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep<TResult extends Object>(
+            customizer: CloneDeepCustomizer<T, TResult>,
+            thisArg?: any
+        ):  LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.cloneDeep
+         */
+        cloneDeep(): LoDashExplicitObjectWrapper<T>;
     }
 
     //_.eq
@@ -13341,40 +13734,65 @@ declare module _ {
          * @param value The value to set.
          * @return Returns object.
          */
-        set<T>(
-            object: T,
+        set<TResult>(
+            object: Object,
             path: StringRepresentable|StringRepresentable[],
             value: any
-        ): T;
+        ): TResult;
 
         /**
          * @see _.set
          */
-        set<V, T>(
-            object: T,
+        set<V, TResult>(
+            object: Object,
             path: StringRepresentable|StringRepresentable[],
             value: V
-        ): T;
+        ): TResult;
+
+        /**
+         * @see _.set
+         */
+        set<O, V, TResult>(
+            object: O,
+            path: StringRepresentable|StringRepresentable[],
+            value: V
+        ): TResult;
     }
 
     interface LoDashImplicitObjectWrapper<T> {
         /**
          * @see _.set
          */
-        set<V>(
+        set<TResult>(
+            path: StringRepresentable|StringRepresentable[],
+            value: any
+        ): LoDashImplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.set
+         */
+        set<V, TResult>(
             path: StringRepresentable|StringRepresentable[],
             value: V
-        ): LoDashImplicitObjectWrapper<T>;
+        ): LoDashImplicitObjectWrapper<TResult>;
     }
 
     interface LoDashExplicitObjectWrapper<T> {
         /**
          * @see _.set
          */
-        set<V>(
+        set<TResult>(
+            path: StringRepresentable|StringRepresentable[],
+            value: any
+        ): LoDashExplicitObjectWrapper<TResult>;
+
+        /**
+         * @see _.set
+         */
+        set<V, TResult>(
             path: StringRepresentable|StringRepresentable[],
             value: V
-        ): LoDashExplicitObjectWrapper<T>;
+        ): LoDashExplicitObjectWrapper<TResult>;
     }
 
     //_.transform

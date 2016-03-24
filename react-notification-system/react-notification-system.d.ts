@@ -1,11 +1,11 @@
 // Type definitions for React Notification System v0.2.6
 // Project: https://www.npmjs.com/package/react-notification-system
 // Definitions by: Giedrius Grabauskas <https://github.com/GiedriusGrabauskas>, Deividas Bakanas <https://github.com/DeividasBakanas>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /// <reference path="../react/react.d.ts" />
 
-declare module NotificationSystem {
+declare namespace NotificationSystem {
 
     import React = __React;
 
@@ -75,15 +75,10 @@ declare module NotificationSystem {
         ref?: string;
         style?: Style | boolean;
     }
-
-
-    export interface Component {
-        (): React.ReactElement<Attributes>;
-    }
 }
 
 
 declare module 'react-notification-system' {
-    var component: NotificationSystem.Component;
+    var component: __React.ClassicComponentClass<NotificationSystem.Attributes>;
     export = component;
 }
