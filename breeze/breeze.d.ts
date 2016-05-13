@@ -838,7 +838,7 @@ declare namespace breeze {
 
     interface QueryResult {
         /** Top level entities returned */
-        results: Entity[];
+        results: any[];
         /** Query that was executed */
         query: EntityQuery;
         /** Raw response from the server */
