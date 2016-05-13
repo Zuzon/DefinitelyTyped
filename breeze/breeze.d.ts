@@ -872,7 +872,7 @@ declare namespace breeze {
     }
 
     interface SaveResult {
-        entities: Entity[];
+        entities: any[];
         keyMappings: any;
         XHR: XMLHttpRequest;
     }
