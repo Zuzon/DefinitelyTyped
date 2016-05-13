@@ -281,7 +281,7 @@ export class ReactBootstrapTest extends Component<any, any> {
 
                 <div style={style}>
                   <div className='static-modal'>
-                    <Modal.Dialog>
+                    <Modal.Dialog onHide={this.callback} onEnter={this.callback} onEntered={this.callback} onEntering={this.callback} onExit={this.callback} onExited={this.callback} onExiting={this.callback}>
                       <Modal.Header>
                         <Modal.Title>Modal title</Modal.Title>
                       </Modal.Header>
@@ -847,7 +847,7 @@ export class ReactBootstrapTest extends Component<any, any> {
 
                 <div style={style}>
                   <form>
-                    <Input type="text" ref="input" onChange={this.callback} />
+                    <Input type="text" name="text" ref="input" onChange={this.callback} />
                       <ButtonInput bsSize="small">Child Text</ButtonInput>
                       <ButtonInput type="reset" bsStyle="primary" onClick={this.callback} />
                       <ButtonInput type="submit" value="Submit Your Input" bsStyle="success" bsSize="large" disabled={false} />
